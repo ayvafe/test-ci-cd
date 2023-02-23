@@ -1,12 +1,29 @@
-on: push
-name: Slack Notification Demo
+
+name: Send Slack Notification on Push
+on:
+  push:
+    branches:
+      - master
 jobs:
-  slackNotification:
-    name: Slack Notification
+  send-notification:
     runs-on: ubuntu-latest
     steps:
-    - uses: slackapi/slack-github-action@v1.23.0
-    - name: Slack Notification
-      uses: ayvafe/test-ci-cd@v2
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+      - name: Send Slack Notification
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
+                {
+                  "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+                  "blocks": [
+                    {
+                      "type": "section",
+                      "text": {
+                        "type": "mrkdwn",
+                        "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+                      }
+                    }
+                  ]
+                }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
