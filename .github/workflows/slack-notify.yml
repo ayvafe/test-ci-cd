@@ -5,7 +5,7 @@ jobs:
     name: Slack Notification
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: slackapi/slack-github-action@v1.23.0
     - name: Slack Notification
       uses: ayvafe/test-ci-cd@v2
       env:
