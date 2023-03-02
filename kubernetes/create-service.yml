@@ -1,0 +1,16 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: test-service
+spec:
+  selector:
+    app: test-ci-cd-app-container
+  ports:
+    - name: http
+      port: 8041 # The port on which the service will be exposed
+      targetPort: 8040
+      # Port accessible outside cluster
+      nodePort: 30002
+  externalTrafficPolicy: Local
+  type: NodePort 

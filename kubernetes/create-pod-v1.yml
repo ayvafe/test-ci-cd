@@ -1,0 +1,38 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: test-service
+spec:
+  selector:
+    app: test-ci-cd-app-container
+  ports:
+    - protocol: "TCP"
+      # Port accessible inside cluster
+      port: 8041
+      # Port to forward to inside the pod
+      targetPort: 8040
+      # Port accessible outside cluster
+      nodePort: 30002
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-ci-cd-app-deployment
+spec:
+  selector:
+	matchLabels:
+          app: test-ci-cd-container
+  replicas: 5
+  template:
+    metadata:
+      labels:
+        app: test-ci-cd-app-container
+    spec:
+      containers:
+        - name: test-ci-cd-app-container
+          image: ayvafe/test-ci-cd-app:latest
+          ports:
+            - containerPort: 8040
