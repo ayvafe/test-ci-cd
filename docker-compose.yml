@@ -6,6 +6,7 @@ services:
     build:
         context: .
         dockerfile: Dockerfile
+    image: test-ci-cd-app
     restart: unless-stopped
     ports:
         - "8040:8000"
