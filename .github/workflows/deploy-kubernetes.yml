@@ -15,7 +15,7 @@ jobs:
       
     - name: Build Docker image and get image name and tag
       id: build-image
-      run: docker build
+      run: docker-compose build
 
     - name: Tag Docker image with custom tag
       run: docker tag ${{ github.DOCKER_IMAGE_NAME }} ${{ github.DOCKER_USERNAME }}/${{ github.DOCKER_IMAGE_NAME }}:latest
