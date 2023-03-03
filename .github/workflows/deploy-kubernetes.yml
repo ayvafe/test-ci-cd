@@ -9,7 +9,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      DOCKER_IMAGE_NAME: "test-app-ci-cd"
+      DOCKER_IMAGE_NAME: "test-ci-cd-app"
       DOCKER_USERNAME: "ayvafe"
     steps:
     - name: Checkout code
