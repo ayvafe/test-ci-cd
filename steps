@@ -1,0 +1,46 @@
+
+
+------ Local server / git repo
+
+--- create PHP laravel app
+--- create docker-compose.yml and dockerfile
+
+------ AWS EC2
+--- install docker
+--- install docker compose
+
+sudo curl -L https://github.com/docker/compose/releases/download/3.7/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+
+check if installed: docker-compose --version
+
+--- install kubectl follow the instructions from the link below
+--- https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+--- Install kubelet, kubeadm
+--- run "sudo kubeadm init" to initialize the kubernetes service
+--- check / install calico-pod node
+     curl https://raw.githubusercontent.com/projectcalico/calico/v3.24.5/manifests/calico-policy-only.yaml -o calico.yaml
+
+--- get vpc id
+
+    curl -s http://169.254.169.254/latest/meta-data/network/interfaces/macs/$(curl -s http://169.254.169.254/latest/meta-data/mac)/vpc-id
+
+// Follow steps
+https://devopscube.com/setup-kubernetes-cluster-kubeadm/#:~:text=Kubernetes%20Cluster%20Setup%20Using%20Kubeadm,-Following%20are%20the&text=Initiate%20Kubeadm%20control%20plane%20configuration,plane)%20using%20the%20join%20command.
+
+--- set IPCDR for nodes
+
+// Workers token
+kubeadm join 10.0.0.4:6443 --token ocbgcr.60ibwk5hj2048tux --discovery-token-ca-cert-hash sha256:06270f443d33215b6c6e99c3b5826cfb691a5706c4eeab1b5b62e865da9df3f1 
+
+// Docker HUb account
+--- login to docker
+--- add tag to the docker image with "username/image-name"
+--- push to dockerv 
+
+// Add kubernetes self signed Certificate
+
+openssl genrsa -out kub_ca.key 2048
+openssl req -new -key kub_ca.key -out kub_ca.csr
+openssl x509 -req -in kub_ca.csr -signkey kub_ca.key -out kub_ca.crt
