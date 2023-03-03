@@ -24,6 +24,7 @@ jobs:
       with:
         context: .
         push: true
+        file: ./docker-compose.yml
         tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_APP_NAME }}:latest
 
     - name: Configure Kubernetes CLI
@@ -32,4 +33,4 @@ jobs:
         kubeconfig: ${{ secrets.KUBECONFIG }}
 
     - name: Deploy to Kubernetes
-      run: kubectl apply -f kubernetes/deployment.yml -f kubernetes/service.yml
+      run: kubectl apply -f kubernetes/create-pod.yml -f kubernetes/create-service-2.yml
