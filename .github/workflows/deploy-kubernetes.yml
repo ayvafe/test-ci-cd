@@ -27,6 +27,11 @@ jobs:
         docker build -t "${{ env.DOCKER_IMAGE_NAME }}" .
         docker tag ${{ env.DOCKER_IMAGE_NAME }}:latest develemento/{{ env.DOCKER_IMAGE_NAME }}:1.0.0
         docker push develemento/{{ env.DOCKER_IMAGE_NAME }}:1.0.0
+      if: ${{ failure() }}
+    - name: Print failed command
+      run: |
+        echo "The failed command was:"
+        tail -n +$(grep -n "run:.*foobar" ${{ github.event_path }} | cut -d':' -f1) ${{ github.event_path }} | head -n 1
             
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
