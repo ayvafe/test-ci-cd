@@ -31,8 +31,7 @@ jobs:
       if: ${{ failure() }}
     - name: Print failed command
       run: |
-        echo "The failed command was:"
-        tail -n +$(grep -n "run:.*docker" ${{ github.event_path }} | cut -d':' -f1) ${{ github.event_path }} | head -n 1
+        echo "The failed command was:" ${{ github.event_path }
             
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
