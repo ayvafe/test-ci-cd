@@ -1,0 +1,24 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: propmgmt-dev
+  name: deployment-propmgmt-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: propmgmt-dev-app
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: propmgmt-dev-app
+    spec:
+      containers:
+      - image: develemento/test-ci-cd:latest
+        imagePullPolicy: Always
+        name: propmgmt-dev-app
+        ports:
+          - containerPort: 80
+      imagePullSecrets:
+        - name: develemento-secret

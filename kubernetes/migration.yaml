@@ -1,0 +1,14 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: laravel-migrate
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      initContainers:
+      - name: migrate db
+        image: ayvafe/test-ci-cd-app:latest
+        # Define the command to run in the init container
+        command: ["php", "artisan", "migrate", "--force"]
+      restartPolicy: Never
