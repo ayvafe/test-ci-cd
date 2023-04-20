@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOCKER_IMAGE_NAME: "test-ci-cd"
-      EKS_CLUSTER_NAME: "propmgmt-dev"
+      EKS_CLUSTER_NAME: "elemento-dev-k8s"
+      EKS_CLUSTER_NAMESPACE: "propmgmt-dev"
       EKS_CLUSTER_REGION: "us-east-2"
     steps:
     - name: Checkout code
@@ -31,7 +32,7 @@ jobs:
     - name: Print failed command
       run: |
         echo "The failed command was:"
-        tail -n +$(grep -n "run:.*foobar" ${{ github.event_path }} | cut -d':' -f1) ${{ github.event_path }} | head -n 1
+        tail -n +$(grep -n "run:.*docker" ${{ github.event_path }} | cut -d':' -f1) ${{ github.event_path }} | head -n 1
             
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
@@ -46,4 +47,4 @@ jobs:
 
     - name: List EKS nodes
       run: |
-        kubectl get nodes
+        kubectl get nodes -n ${{ env.EKS_CLUSTER_NAMESPACE }}
