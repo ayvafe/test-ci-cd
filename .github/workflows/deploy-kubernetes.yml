@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       DOCKER_IMAGE_NAME: "test-ci-cd-app"
-      DOCKER_USERNAME: "ayvafe"
+      EKS_CLUSTER_NAME: "propmgmt-dev"
+      EKS_CLUSTER_REGION: "us-east-2"
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -23,14 +24,20 @@ jobs:
       
     - name: Build Docker image | Tag | Push
       run: |
-        docker-compose build 
-        docker tag "$DOCKER_IMAGE_NAME" "ayvafe/$DOCKER_IMAGE_NAME"
-        docker push "ayvafe/$DOCKER_IMAGE_NAME"
-
-    - name: Configure Kubernetes CLI
-      uses: azure/setup-kubectl@v1
+        docker build . --tag "$DOCKER_IMAGE_NAME" "develemento/$DOCKER_IMAGE_NAME"
+        docker push "develemento/$DOCKER_IMAGE_NAME"
+            
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
       with:
-        kubeconfig: ${{ secrets.KUBECONFIG }}
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.EKS_CLUSTER_REGION }}
 
-    - name: Deploy to Kubernetes
-      run: kubectl apply -f kubernetes/create-pod.yml -f kubernetes/create-service-2.yml
+    - name: Connect to EKS cluster
+      run: |
+        aws eks update-kubeconfig --name ${{ env.EKS_CLUSTER_NAME }} --region ${{ env.EKS_CLUSTER_REGION }}
+
+    - name: List EKS nodes
+      run: |
+        kubectl get nodes
