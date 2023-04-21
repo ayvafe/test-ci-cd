@@ -30,7 +30,7 @@ jobs:
         docker push develemento/{{ env.DOCKER_IMAGE_NAME }}:1.0.0
       if: ${{ failure() }}
     - name: Print failed command
-      run: echo "The failed command was:" ${{ github.event_path }
+      run: echo "The failed command was:" ${{ github.event_path }}
             
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
