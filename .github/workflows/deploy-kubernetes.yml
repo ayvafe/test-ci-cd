@@ -13,6 +13,8 @@ jobs:
       EKS_CLUSTER_NAME: "elemento-dev-k8s"
       EKS_CLUSTER_NAMESPACE: "propmgmt-dev"
       EKS_CLUSTER_REGION: "us-east-2"
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+      SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -41,4 +43,22 @@ jobs:
         aws eks update-kubeconfig --name ${{ env.EKS_CLUSTER_NAME }} --region ${{ env.EKS_CLUSTER_REGION }}
 
     - name: Deploy to Kubernetes
-      run: kubectl apply -f kubernetes/create_deployment.yml
+#       run: kubectl apply -f kubernetes/create_deployment.yml
+      
+    - name: Send Slack Notification
+      uses: slackapi/slack-github-action@v1.23.0
+      with:
+        payload: |
+              {
+                "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+                "blocks": [
+                  {
+                    "type": "section",
+                    "text": {
+                      "type": "mrkdwn",
+                      "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+                    }
+                  }
+                ]
+              }
+          
