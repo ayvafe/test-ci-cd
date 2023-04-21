@@ -26,7 +26,7 @@ jobs:
     - name: Build Docker image | Tag | Push
       run: |
         docker build -t "${{ env.DOCKER_IMAGE_NAME }}" .
-        docker tag ${{ env.DOCKER_IMAGE_NAME }}:latest develemento/{{ env.DOCKER_IMAGE_NAME }}:1.0.0
+        docker tag "${{ env.DOCKER_IMAGE_NAME }}:latest" "develemento/{{ env.DOCKER_IMAGE_NAME }}:1.0.0"
         docker push develemento/{{ env.DOCKER_IMAGE_NAME }}:1.0.0
       if: ${{ failure() }}
     - name: Print failed command
