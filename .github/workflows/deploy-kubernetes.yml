@@ -26,8 +26,8 @@ jobs:
     - name: Build Docker image | Tag | Push
       run: |
         docker build -t "${{ env.DOCKER_IMAGE_NAME }}" .
-        docker tag "${{ env.DOCKER_IMAGE_NAME }}:latest" "develemento/{{ env.DOCKER_IMAGE_NAME }}:1.0.0"
-        docker push develemento/{{ env.DOCKER_IMAGE_NAME }}:1.0.0
+        docker tag test-ci-cd:latest develemento/test-ci-cd:1.0.0
+        docker push develemento/test-ci-cd:1.0.0
             
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
