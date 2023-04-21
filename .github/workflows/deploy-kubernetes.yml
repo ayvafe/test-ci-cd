@@ -40,6 +40,5 @@ jobs:
       run: |
         aws eks update-kubeconfig --name ${{ env.EKS_CLUSTER_NAME }} --region ${{ env.EKS_CLUSTER_REGION }}
 
-    - name: List EKS nodes
-      run: |
-        kubectl get nodes -n ${{ env.EKS_CLUSTER_NAMESPACE }}
+    - name: Deploy to Kubernetes
+      run: kubectl apply -f kubernetes/create_deployment.yml
