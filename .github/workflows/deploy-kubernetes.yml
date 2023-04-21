@@ -42,7 +42,7 @@ jobs:
       run: |
         aws eks update-kubeconfig --name ${{ env.EKS_CLUSTER_NAME }} --region ${{ env.EKS_CLUSTER_REGION }}
 
-    - name: Deploy to Kubernetes
+#     - name: Deploy to Kubernetes
 #       run: kubectl apply -f kubernetes/create_deployment.yml
       
     - name: Send Slack Notification
